@@ -41,19 +41,19 @@
         <script src="js/leaflet.photon.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="js/leaflet.markercluster.js"></script>
-        <script src="data/HospitalCerro_1.js"></script>
-        <script src="data/HospitalPasteur_2.js"></script>
-        <script src="data/HospitalMaciel_3.js"></script>
-        <script src="data/HospitalLasPiedras_4.js"></script>
-        <script src="data/CentroDepartamentalCanelones_5.js"></script>
-        <script src="data/HospitaldeClinicas_6.js"></script>
-        <script src="data/HospitalPando_7.js"></script>
-        <script src="data/HospitalEspaol_8.js"></script>
-        <script src="data/HospitalSaintBois_9.js"></script>
-        <script src="data/Todaslasunidades_10.js"></script>
-        <script src="data/Areas_11.js"></script>
-        <script src="data/Departamentos_12.js"></script>
-        <script src="data/Lmite_13.js"></script>
+        <script src="data/HospitalCerro_6.js"></script>
+        <script src="data/HospitalPasteur_7.js"></script>
+        <script src="data/HospitalMaciel_8.js"></script>
+        <script src="data/HospitalLasPiedras_9.js"></script>
+        <script src="data/CentroDepartamentalCanelones_10.js"></script>
+        <script src="data/HospitaldeClinicas_11.js"></script>
+        <script src="data/HospitalPando_12.js"></script>
+        <script src="data/HospitalEspaol_13.js"></script>
+        <script src="data/HospitalSaintBois_14.js"></script>
+        <script src="data/Todaslasunidades_15.js"></script>
+        <script src="data/Areas_16.js"></script>
+        <script src="data/Departamentos_17.js"></script>
+        <script src="data/Lmite_18.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -79,27 +79,7 @@
             [[-34.87155956098754, -60.98991618290095], [-30.021369393669247, -51.07975132758076]]
         );
         var hash = new L.Hash(map);
-        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        setTimeout(function () {
-            try {
-                var atc = map.attributionControl && map.attributionControl._container;
-                if (!atc) return;                
-                if (atc.innerHTML.indexOf('Hospital de Clínicas') !== -1) return;
-
-                var link =
-                    '<a href="https://www.hc.edu.uy/" target="_blank" rel="noopener">' +
-                    'Hospital de Clínicas' +
-                    '</a>';
-                var html = atc.innerHTML;                
-                var re = /<a\b[^>]*>\s*qgis2web\s*<\/a>/i;
-                if (re.test(html)) {                    
-                    atc.innerHTML = html.replace(re, link + ' &middot; $&');
-                } else {                    
-                    atc.innerHTML = link + ' &middot; ' + html;
-                }
-            } catch (e) {                
-            }
-        }, 300);
+        map.attributionControl.setPrefix('<a href="https://www.hc.edu.uy/" target="_blank" rel="noopener">Hospital de Clínicas</a> &middot; <a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         //  //  
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
         // remove popup's row if "visible-with-data"
@@ -146,10 +126,62 @@
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
-        map.createPane('pane_OSMStandard_0');
-        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
-        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            pane: 'pane_OSMStandard_0',
+        map.createPane('pane_EsriSatelite_0');
+        map.getPane('pane_EsriSatelite_0').style.zIndex = 400;
+        var layer_EsriSatelite_0 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_EsriSatelite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_EsriSatelite_0;
+        map.createPane('pane_CartoDark_1');
+        map.getPane('pane_CartoDark_1').style.zIndex = 401;
+        var layer_CartoDark_1 = L.tileLayer('https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+            pane: 'pane_CartoDark_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_CartoDark_1;
+        map.createPane('pane_EsriDarkGray_2');
+        map.getPane('pane_EsriDarkGray_2').style.zIndex = 402;
+        var layer_EsriDarkGray_2 = L.tileLayer('https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_EsriDarkGray_2',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_EsriDarkGray_2;
+        map.createPane('pane_CartoLight_3');
+        map.getPane('pane_CartoLight_3').style.zIndex = 403;
+        var layer_CartoLight_3 = L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.pn', {
+            pane: 'pane_CartoLight_3',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_CartoLight_3;
+        map.createPane('pane_EsriTopographic_4');
+        map.getPane('pane_EsriTopographic_4').style.zIndex = 404;
+        var layer_EsriTopographic_4 = L.tileLayer('https://server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_EsriTopographic_4',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_EsriTopographic_4;
+        map.createPane('pane_OSMStandard_5');
+        map.getPane('pane_OSMStandard_5').style.zIndex = 405;
+        var layer_OSMStandard_5 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_5',
             opacity: 1.0,
             attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
             minZoom: 1,
@@ -157,9 +189,9 @@
             minNativeZoom: 0,
             maxNativeZoom: 19
         });
-        layer_OSMStandard_0;
-        map.addLayer(layer_OSMStandard_0);
-        function pop_HospitalCerro_1(feature, layer) {
+        layer_OSMStandard_5;
+        map.addLayer(layer_OSMStandard_5);
+        function pop_HospitalCerro_6(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -186,9 +218,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitalCerro_1_0() {
+        function style_HospitalCerro_6_0() {
             return {
-                pane: 'pane_HospitalCerro_1',
+                pane: 'pane_HospitalCerro_6',
                 opacity: 1,
                 color: 'rgba(77,175,74,0.2)',
                 dashArray: '',
@@ -199,9 +231,9 @@
                 interactive: false,
             }
         }
-        function style_HospitalCerro_1_1() {
+        function style_HospitalCerro_6_1() {
             return {
-                pane: 'pane_HospitalCerro_1',
+                pane: 'pane_HospitalCerro_6',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -214,20 +246,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitalCerro_1');
-        map.getPane('pane_HospitalCerro_1').style.zIndex = 401;
-        map.getPane('pane_HospitalCerro_1').style['mix-blend-mode'] = 'normal';
-        var layer_HospitalCerro_1 = new L.geoJson.multiStyle(json_HospitalCerro_1, {
+        map.createPane('pane_HospitalCerro_6');
+        map.getPane('pane_HospitalCerro_6').style.zIndex = 406;
+        map.getPane('pane_HospitalCerro_6').style['mix-blend-mode'] = 'normal';
+        var layer_HospitalCerro_6 = new L.geoJson.multiStyle(json_HospitalCerro_6, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitalCerro_1',
-            layerName: 'layer_HospitalCerro_1',
-            pane: 'pane_HospitalCerro_1',
-            onEachFeature: pop_HospitalCerro_1,
-            styles: [style_HospitalCerro_1_0,style_HospitalCerro_1_1,]
+            dataVar: 'json_HospitalCerro_6',
+            layerName: 'layer_HospitalCerro_6',
+            pane: 'pane_HospitalCerro_6',
+            onEachFeature: pop_HospitalCerro_6,
+            styles: [style_HospitalCerro_6_0,style_HospitalCerro_6_1,]
         });
-        bounds_group.addLayer(layer_HospitalCerro_1);
-        function pop_HospitalPasteur_2(feature, layer) {
+        bounds_group.addLayer(layer_HospitalCerro_6);
+        function pop_HospitalPasteur_7(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -254,9 +286,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitalPasteur_2_0() {
+        function style_HospitalPasteur_7_0() {
             return {
-                pane: 'pane_HospitalPasteur_2',
+                pane: 'pane_HospitalPasteur_7',
                 opacity: 1,
                 color: 'rgba(77,175,74,0.2)',
                 dashArray: '',
@@ -267,9 +299,9 @@
                 interactive: false,
             }
         }
-        function style_HospitalPasteur_2_1() {
+        function style_HospitalPasteur_7_1() {
             return {
-                pane: 'pane_HospitalPasteur_2',
+                pane: 'pane_HospitalPasteur_7',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -282,20 +314,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitalPasteur_2');
-        map.getPane('pane_HospitalPasteur_2').style.zIndex = 402;
-        map.getPane('pane_HospitalPasteur_2').style['mix-blend-mode'] = 'normal';
-        var layer_HospitalPasteur_2 = new L.geoJson.multiStyle(json_HospitalPasteur_2, {
+        map.createPane('pane_HospitalPasteur_7');
+        map.getPane('pane_HospitalPasteur_7').style.zIndex = 407;
+        map.getPane('pane_HospitalPasteur_7').style['mix-blend-mode'] = 'normal';
+        var layer_HospitalPasteur_7 = new L.geoJson.multiStyle(json_HospitalPasteur_7, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitalPasteur_2',
-            layerName: 'layer_HospitalPasteur_2',
-            pane: 'pane_HospitalPasteur_2',
-            onEachFeature: pop_HospitalPasteur_2,
-            styles: [style_HospitalPasteur_2_0,style_HospitalPasteur_2_1,]
+            dataVar: 'json_HospitalPasteur_7',
+            layerName: 'layer_HospitalPasteur_7',
+            pane: 'pane_HospitalPasteur_7',
+            onEachFeature: pop_HospitalPasteur_7,
+            styles: [style_HospitalPasteur_7_0,style_HospitalPasteur_7_1,]
         });
-        bounds_group.addLayer(layer_HospitalPasteur_2);
-        function pop_HospitalMaciel_3(feature, layer) {
+        bounds_group.addLayer(layer_HospitalPasteur_7);
+        function pop_HospitalMaciel_8(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -322,9 +354,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitalMaciel_3_0() {
+        function style_HospitalMaciel_8_0() {
             return {
-                pane: 'pane_HospitalMaciel_3',
+                pane: 'pane_HospitalMaciel_8',
                 opacity: 1,
                 color: 'rgba(77,175,74,0.2)',
                 dashArray: '',
@@ -335,9 +367,9 @@
                 interactive: false,
             }
         }
-        function style_HospitalMaciel_3_1() {
+        function style_HospitalMaciel_8_1() {
             return {
-                pane: 'pane_HospitalMaciel_3',
+                pane: 'pane_HospitalMaciel_8',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -350,20 +382,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitalMaciel_3');
-        map.getPane('pane_HospitalMaciel_3').style.zIndex = 403;
-        map.getPane('pane_HospitalMaciel_3').style['mix-blend-mode'] = 'normal';
-        var layer_HospitalMaciel_3 = new L.geoJson.multiStyle(json_HospitalMaciel_3, {
+        map.createPane('pane_HospitalMaciel_8');
+        map.getPane('pane_HospitalMaciel_8').style.zIndex = 408;
+        map.getPane('pane_HospitalMaciel_8').style['mix-blend-mode'] = 'normal';
+        var layer_HospitalMaciel_8 = new L.geoJson.multiStyle(json_HospitalMaciel_8, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitalMaciel_3',
-            layerName: 'layer_HospitalMaciel_3',
-            pane: 'pane_HospitalMaciel_3',
-            onEachFeature: pop_HospitalMaciel_3,
-            styles: [style_HospitalMaciel_3_0,style_HospitalMaciel_3_1,]
+            dataVar: 'json_HospitalMaciel_8',
+            layerName: 'layer_HospitalMaciel_8',
+            pane: 'pane_HospitalMaciel_8',
+            onEachFeature: pop_HospitalMaciel_8,
+            styles: [style_HospitalMaciel_8_0,style_HospitalMaciel_8_1,]
         });
-        bounds_group.addLayer(layer_HospitalMaciel_3);
-        function pop_HospitalLasPiedras_4(feature, layer) {
+        bounds_group.addLayer(layer_HospitalMaciel_8);
+        function pop_HospitalLasPiedras_9(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -390,9 +422,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitalLasPiedras_4_0() {
+        function style_HospitalLasPiedras_9_0() {
             return {
-                pane: 'pane_HospitalLasPiedras_4',
+                pane: 'pane_HospitalLasPiedras_9',
                 opacity: 1,
                 color: 'rgba(77,175,74,0.2)',
                 dashArray: '',
@@ -403,9 +435,9 @@
                 interactive: false,
             }
         }
-        function style_HospitalLasPiedras_4_1() {
+        function style_HospitalLasPiedras_9_1() {
             return {
-                pane: 'pane_HospitalLasPiedras_4',
+                pane: 'pane_HospitalLasPiedras_9',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -418,20 +450,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitalLasPiedras_4');
-        map.getPane('pane_HospitalLasPiedras_4').style.zIndex = 404;
-        map.getPane('pane_HospitalLasPiedras_4').style['mix-blend-mode'] = 'normal';
-        var layer_HospitalLasPiedras_4 = new L.geoJson.multiStyle(json_HospitalLasPiedras_4, {
+        map.createPane('pane_HospitalLasPiedras_9');
+        map.getPane('pane_HospitalLasPiedras_9').style.zIndex = 409;
+        map.getPane('pane_HospitalLasPiedras_9').style['mix-blend-mode'] = 'normal';
+        var layer_HospitalLasPiedras_9 = new L.geoJson.multiStyle(json_HospitalLasPiedras_9, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitalLasPiedras_4',
-            layerName: 'layer_HospitalLasPiedras_4',
-            pane: 'pane_HospitalLasPiedras_4',
-            onEachFeature: pop_HospitalLasPiedras_4,
-            styles: [style_HospitalLasPiedras_4_0,style_HospitalLasPiedras_4_1,]
+            dataVar: 'json_HospitalLasPiedras_9',
+            layerName: 'layer_HospitalLasPiedras_9',
+            pane: 'pane_HospitalLasPiedras_9',
+            onEachFeature: pop_HospitalLasPiedras_9,
+            styles: [style_HospitalLasPiedras_9_0,style_HospitalLasPiedras_9_1,]
         });
-        bounds_group.addLayer(layer_HospitalLasPiedras_4);
-        function pop_CentroDepartamentalCanelones_5(feature, layer) {
+        bounds_group.addLayer(layer_HospitalLasPiedras_9);
+        function pop_CentroDepartamentalCanelones_10(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -458,9 +490,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_CentroDepartamentalCanelones_5_0() {
+        function style_CentroDepartamentalCanelones_10_0() {
             return {
-                pane: 'pane_CentroDepartamentalCanelones_5',
+                pane: 'pane_CentroDepartamentalCanelones_10',
                 opacity: 1,
                 color: 'rgba(77,175,74,0.2)',
                 dashArray: '',
@@ -471,9 +503,9 @@
                 interactive: false,
             }
         }
-        function style_CentroDepartamentalCanelones_5_1() {
+        function style_CentroDepartamentalCanelones_10_1() {
             return {
-                pane: 'pane_CentroDepartamentalCanelones_5',
+                pane: 'pane_CentroDepartamentalCanelones_10',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -486,20 +518,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_CentroDepartamentalCanelones_5');
-        map.getPane('pane_CentroDepartamentalCanelones_5').style.zIndex = 405;
-        map.getPane('pane_CentroDepartamentalCanelones_5').style['mix-blend-mode'] = 'normal';
-        var layer_CentroDepartamentalCanelones_5 = new L.geoJson.multiStyle(json_CentroDepartamentalCanelones_5, {
+        map.createPane('pane_CentroDepartamentalCanelones_10');
+        map.getPane('pane_CentroDepartamentalCanelones_10').style.zIndex = 410;
+        map.getPane('pane_CentroDepartamentalCanelones_10').style['mix-blend-mode'] = 'normal';
+        var layer_CentroDepartamentalCanelones_10 = new L.geoJson.multiStyle(json_CentroDepartamentalCanelones_10, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_CentroDepartamentalCanelones_5',
-            layerName: 'layer_CentroDepartamentalCanelones_5',
-            pane: 'pane_CentroDepartamentalCanelones_5',
-            onEachFeature: pop_CentroDepartamentalCanelones_5,
-            styles: [style_CentroDepartamentalCanelones_5_0,style_CentroDepartamentalCanelones_5_1,]
+            dataVar: 'json_CentroDepartamentalCanelones_10',
+            layerName: 'layer_CentroDepartamentalCanelones_10',
+            pane: 'pane_CentroDepartamentalCanelones_10',
+            onEachFeature: pop_CentroDepartamentalCanelones_10,
+            styles: [style_CentroDepartamentalCanelones_10_0,style_CentroDepartamentalCanelones_10_1,]
         });
-        bounds_group.addLayer(layer_CentroDepartamentalCanelones_5);
-        function pop_HospitaldeClinicas_6(feature, layer) {
+        bounds_group.addLayer(layer_CentroDepartamentalCanelones_10);
+        function pop_HospitaldeClinicas_11(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -526,9 +558,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitaldeClinicas_6_0() {
+        function style_HospitaldeClinicas_11_0() {
             return {
-                pane: 'pane_HospitaldeClinicas_6',
+                pane: 'pane_HospitaldeClinicas_11',
                 opacity: 1,
                 color: 'rgba(53,121,177,0.2)',
                 dashArray: '',
@@ -539,9 +571,9 @@
                 interactive: false,
             }
         }
-        function style_HospitaldeClinicas_6_1() {
+        function style_HospitaldeClinicas_11_1() {
             return {
-                pane: 'pane_HospitaldeClinicas_6',
+                pane: 'pane_HospitaldeClinicas_11',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -554,20 +586,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitaldeClinicas_6');
-        map.getPane('pane_HospitaldeClinicas_6').style.zIndex = 406;
-        map.getPane('pane_HospitaldeClinicas_6').style['mix-blend-mode'] = 'normal';
-        var layer_HospitaldeClinicas_6 = new L.geoJson.multiStyle(json_HospitaldeClinicas_6, {
+        map.createPane('pane_HospitaldeClinicas_11');
+        map.getPane('pane_HospitaldeClinicas_11').style.zIndex = 411;
+        map.getPane('pane_HospitaldeClinicas_11').style['mix-blend-mode'] = 'normal';
+        var layer_HospitaldeClinicas_11 = new L.geoJson.multiStyle(json_HospitaldeClinicas_11, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitaldeClinicas_6',
-            layerName: 'layer_HospitaldeClinicas_6',
-            pane: 'pane_HospitaldeClinicas_6',
-            onEachFeature: pop_HospitaldeClinicas_6,
-            styles: [style_HospitaldeClinicas_6_0,style_HospitaldeClinicas_6_1,]
+            dataVar: 'json_HospitaldeClinicas_11',
+            layerName: 'layer_HospitaldeClinicas_11',
+            pane: 'pane_HospitaldeClinicas_11',
+            onEachFeature: pop_HospitaldeClinicas_11,
+            styles: [style_HospitaldeClinicas_11_0,style_HospitaldeClinicas_11_1,]
         });
-        bounds_group.addLayer(layer_HospitaldeClinicas_6);
-        function pop_HospitalPando_7(feature, layer) {
+        bounds_group.addLayer(layer_HospitaldeClinicas_11);
+        function pop_HospitalPando_12(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -594,9 +626,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitalPando_7_0() {
+        function style_HospitalPando_12_0() {
             return {
-                pane: 'pane_HospitalPando_7',
+                pane: 'pane_HospitalPando_12',
                 opacity: 1,
                 color: 'rgba(53,121,177,0.2)',
                 dashArray: '',
@@ -607,9 +639,9 @@
                 interactive: false,
             }
         }
-        function style_HospitalPando_7_1() {
+        function style_HospitalPando_12_1() {
             return {
-                pane: 'pane_HospitalPando_7',
+                pane: 'pane_HospitalPando_12',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -622,20 +654,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitalPando_7');
-        map.getPane('pane_HospitalPando_7').style.zIndex = 407;
-        map.getPane('pane_HospitalPando_7').style['mix-blend-mode'] = 'normal';
-        var layer_HospitalPando_7 = new L.geoJson.multiStyle(json_HospitalPando_7, {
+        map.createPane('pane_HospitalPando_12');
+        map.getPane('pane_HospitalPando_12').style.zIndex = 412;
+        map.getPane('pane_HospitalPando_12').style['mix-blend-mode'] = 'normal';
+        var layer_HospitalPando_12 = new L.geoJson.multiStyle(json_HospitalPando_12, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitalPando_7',
-            layerName: 'layer_HospitalPando_7',
-            pane: 'pane_HospitalPando_7',
-            onEachFeature: pop_HospitalPando_7,
-            styles: [style_HospitalPando_7_0,style_HospitalPando_7_1,]
+            dataVar: 'json_HospitalPando_12',
+            layerName: 'layer_HospitalPando_12',
+            pane: 'pane_HospitalPando_12',
+            onEachFeature: pop_HospitalPando_12,
+            styles: [style_HospitalPando_12_0,style_HospitalPando_12_1,]
         });
-        bounds_group.addLayer(layer_HospitalPando_7);
-        function pop_HospitalEspaol_8(feature, layer) {
+        bounds_group.addLayer(layer_HospitalPando_12);
+        function pop_HospitalEspaol_13(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -662,9 +694,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitalEspaol_8_0() {
+        function style_HospitalEspaol_13_0() {
             return {
-                pane: 'pane_HospitalEspaol_8',
+                pane: 'pane_HospitalEspaol_13',
                 opacity: 1,
                 color: 'rgba(53,121,177,0.2)',
                 dashArray: '',
@@ -675,9 +707,9 @@
                 interactive: false,
             }
         }
-        function style_HospitalEspaol_8_1() {
+        function style_HospitalEspaol_13_1() {
             return {
-                pane: 'pane_HospitalEspaol_8',
+                pane: 'pane_HospitalEspaol_13',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -690,20 +722,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitalEspaol_8');
-        map.getPane('pane_HospitalEspaol_8').style.zIndex = 408;
-        map.getPane('pane_HospitalEspaol_8').style['mix-blend-mode'] = 'normal';
-        var layer_HospitalEspaol_8 = new L.geoJson.multiStyle(json_HospitalEspaol_8, {
+        map.createPane('pane_HospitalEspaol_13');
+        map.getPane('pane_HospitalEspaol_13').style.zIndex = 413;
+        map.getPane('pane_HospitalEspaol_13').style['mix-blend-mode'] = 'normal';
+        var layer_HospitalEspaol_13 = new L.geoJson.multiStyle(json_HospitalEspaol_13, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitalEspaol_8',
-            layerName: 'layer_HospitalEspaol_8',
-            pane: 'pane_HospitalEspaol_8',
-            onEachFeature: pop_HospitalEspaol_8,
-            styles: [style_HospitalEspaol_8_0,style_HospitalEspaol_8_1,]
+            dataVar: 'json_HospitalEspaol_13',
+            layerName: 'layer_HospitalEspaol_13',
+            pane: 'pane_HospitalEspaol_13',
+            onEachFeature: pop_HospitalEspaol_13,
+            styles: [style_HospitalEspaol_13_0,style_HospitalEspaol_13_1,]
         });
-        bounds_group.addLayer(layer_HospitalEspaol_8);
-        function pop_HospitalSaintBois_9(feature, layer) {
+        bounds_group.addLayer(layer_HospitalEspaol_13);
+        function pop_HospitalSaintBois_14(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -730,9 +762,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_HospitalSaintBois_9_0() {
+        function style_HospitalSaintBois_14_0() {
             return {
-                pane: 'pane_HospitalSaintBois_9',
+                pane: 'pane_HospitalSaintBois_14',
                 opacity: 1,
                 color: 'rgba(53,121,177,0.2)',
                 dashArray: '',
@@ -743,9 +775,9 @@
                 interactive: false,
             }
         }
-        function style_HospitalSaintBois_9_1() {
+        function style_HospitalSaintBois_14_1() {
             return {
-                pane: 'pane_HospitalSaintBois_9',
+                pane: 'pane_HospitalSaintBois_14',
                 opacity: 1,
                 color: 'rgba(35,35,35,0.2)',
                 dashArray: '',
@@ -758,20 +790,20 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_HospitalSaintBois_9');
-        map.getPane('pane_HospitalSaintBois_9').style.zIndex = 409;
-        map.getPane('pane_HospitalSaintBois_9').style['mix-blend-mode'] = 'normal';
-        var layer_HospitalSaintBois_9 = new L.geoJson.multiStyle(json_HospitalSaintBois_9, {
+        map.createPane('pane_HospitalSaintBois_14');
+        map.getPane('pane_HospitalSaintBois_14').style.zIndex = 414;
+        map.getPane('pane_HospitalSaintBois_14').style['mix-blend-mode'] = 'normal';
+        var layer_HospitalSaintBois_14 = new L.geoJson.multiStyle(json_HospitalSaintBois_14, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_HospitalSaintBois_9',
-            layerName: 'layer_HospitalSaintBois_9',
-            pane: 'pane_HospitalSaintBois_9',
-            onEachFeature: pop_HospitalSaintBois_9,
-            styles: [style_HospitalSaintBois_9_0,style_HospitalSaintBois_9_1,]
+            dataVar: 'json_HospitalSaintBois_14',
+            layerName: 'layer_HospitalSaintBois_14',
+            pane: 'pane_HospitalSaintBois_14',
+            onEachFeature: pop_HospitalSaintBois_14,
+            styles: [style_HospitalSaintBois_14_0,style_HospitalSaintBois_14_1,]
         });
-        bounds_group.addLayer(layer_HospitalSaintBois_9);
-        function pop_Todaslasunidades_10(feature, layer) {
+        bounds_group.addLayer(layer_HospitalSaintBois_14);
+        function pop_Todaslasunidades_15(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -822,42 +854,42 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Todaslasunidades_10_0() {
+        function style_Todaslasunidades_15_0() {
             return {
-                pane: 'pane_Todaslasunidades_10',
+                pane: 'pane_Todaslasunidades_15',
         rotationAngle: 0.0,
         rotationOrigin: 'center center',
         icon: L.icon({
-            iconUrl: 'markers/Todaslasunidades_10.svg',
+            iconUrl: 'markers/Todaslasunidades_15.svg',
             iconSize: [14.44, 14.44]
         }),
                 interactive: true,
             }
         }
-        map.createPane('pane_Todaslasunidades_10');
-        map.getPane('pane_Todaslasunidades_10').style.zIndex = 410;
-        map.getPane('pane_Todaslasunidades_10').style['mix-blend-mode'] = 'normal';
-        var layer_Todaslasunidades_10 = new L.geoJson(json_Todaslasunidades_10, {
+        map.createPane('pane_Todaslasunidades_15');
+        map.getPane('pane_Todaslasunidades_15').style.zIndex = 415;
+        map.getPane('pane_Todaslasunidades_15').style['mix-blend-mode'] = 'normal';
+        var layer_Todaslasunidades_15 = new L.geoJson(json_Todaslasunidades_15, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Todaslasunidades_10',
-            layerName: 'layer_Todaslasunidades_10',
-            pane: 'pane_Todaslasunidades_10',
-            onEachFeature: pop_Todaslasunidades_10,
+            dataVar: 'json_Todaslasunidades_15',
+            layerName: 'layer_Todaslasunidades_15',
+            pane: 'pane_Todaslasunidades_15',
+            onEachFeature: pop_Todaslasunidades_15,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.marker(latlng, style_Todaslasunidades_10_0(feature));
+                return L.marker(latlng, style_Todaslasunidades_15_0(feature));
             },
         });
-        var cluster_Todaslasunidades_10 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+        var cluster_Todaslasunidades_15 = new L.MarkerClusterGroup({showCoverageOnHover: false,
             spiderfyDistanceMultiplier: 2});
-        cluster_Todaslasunidades_10.addLayer(layer_Todaslasunidades_10);
+        cluster_Todaslasunidades_15.addLayer(layer_Todaslasunidades_15);
 
-        bounds_group.addLayer(layer_Todaslasunidades_10);
-        function pop_Areas_11(feature, layer) {
+        bounds_group.addLayer(layer_Todaslasunidades_15);
+        function pop_Areas_16(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -892,9 +924,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Areas_11_0() {
+        function style_Areas_16_0() {
             return {
-                pane: 'pane_Areas_11',
+                pane: 'pane_Areas_16',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -907,20 +939,20 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Areas_11');
-        map.getPane('pane_Areas_11').style.zIndex = 411;
-        map.getPane('pane_Areas_11').style['mix-blend-mode'] = 'normal';
-        var layer_Areas_11 = new L.geoJson(json_Areas_11, {
+        map.createPane('pane_Areas_16');
+        map.getPane('pane_Areas_16').style.zIndex = 416;
+        map.getPane('pane_Areas_16').style['mix-blend-mode'] = 'normal';
+        var layer_Areas_16 = new L.geoJson(json_Areas_16, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Areas_11',
-            layerName: 'layer_Areas_11',
-            pane: 'pane_Areas_11',
-            onEachFeature: pop_Areas_11,
-            style: style_Areas_11_0,
+            dataVar: 'json_Areas_16',
+            layerName: 'layer_Areas_16',
+            pane: 'pane_Areas_16',
+            onEachFeature: pop_Areas_16,
+            style: style_Areas_16_0,
         });
-        bounds_group.addLayer(layer_Areas_11);
-        function pop_Departamentos_12(feature, layer) {
+        bounds_group.addLayer(layer_Areas_16);
+        function pop_Departamentos_17(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -941,7 +973,7 @@
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">REFERENCIA</th>\
-                        <td>' + (feature.properties['REFERENCIA'] !== null ? autolinker.link(String(feature.properties['REFERENCIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="REFERENCIA">' + (feature.properties['REFERENCIA'] !== null ? autolinker.link(String(feature.properties['REFERENCIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -951,9 +983,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Departamentos_12_0() {
+        function style_Departamentos_17_0() {
             return {
-                pane: 'pane_Departamentos_12',
+                pane: 'pane_Departamentos_17',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -966,20 +998,20 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Departamentos_12');
-        map.getPane('pane_Departamentos_12').style.zIndex = 412;
-        map.getPane('pane_Departamentos_12').style['mix-blend-mode'] = 'normal';
-        var layer_Departamentos_12 = new L.geoJson(json_Departamentos_12, {
+        map.createPane('pane_Departamentos_17');
+        map.getPane('pane_Departamentos_17').style.zIndex = 417;
+        map.getPane('pane_Departamentos_17').style['mix-blend-mode'] = 'normal';
+        var layer_Departamentos_17 = new L.geoJson(json_Departamentos_17, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Departamentos_12',
-            layerName: 'layer_Departamentos_12',
-            pane: 'pane_Departamentos_12',
-            onEachFeature: pop_Departamentos_12,
-            style: style_Departamentos_12_0,
+            dataVar: 'json_Departamentos_17',
+            layerName: 'layer_Departamentos_17',
+            pane: 'pane_Departamentos_17',
+            onEachFeature: pop_Departamentos_17,
+            style: style_Departamentos_17_0,
         });
-        bounds_group.addLayer(layer_Departamentos_12);
-        function pop_Lmite_13(feature, layer) {
+        bounds_group.addLayer(layer_Departamentos_17);
+        function pop_Lmite_18(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -1006,9 +1038,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Lmite_13_0() {
+        function style_Lmite_18_0() {
             return {
-                pane: 'pane_Lmite_13',
+                pane: 'pane_Lmite_18',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -1021,19 +1053,19 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_Lmite_13');
-        map.getPane('pane_Lmite_13').style.zIndex = 413;
-        map.getPane('pane_Lmite_13').style['mix-blend-mode'] = 'normal';
-        var layer_Lmite_13 = new L.geoJson(json_Lmite_13, {
+        map.createPane('pane_Lmite_18');
+        map.getPane('pane_Lmite_18').style.zIndex = 418;
+        map.getPane('pane_Lmite_18').style['mix-blend-mode'] = 'normal';
+        var layer_Lmite_18 = new L.geoJson(json_Lmite_18, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_Lmite_13',
-            layerName: 'layer_Lmite_13',
-            pane: 'pane_Lmite_13',
-            onEachFeature: pop_Lmite_13,
-            style: style_Lmite_13_0,
+            dataVar: 'json_Lmite_18',
+            layerName: 'layer_Lmite_18',
+            pane: 'pane_Lmite_18',
+            onEachFeature: pop_Lmite_18,
+            style: style_Lmite_18_0,
         });
-        bounds_group.addLayer(layer_Lmite_13);
+        bounds_group.addLayer(layer_Lmite_18);
         const url = {"Nominatim": "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&",
         "BAN": "https://api-adresse.data.gouv.fr/search/?"}
         var photonControl = L.control.photon({
@@ -1088,7 +1120,7 @@
             console.log(e);
             e.target.input.value = z;
         });
-        //  //  
+        //  // 
         var search = document.getElementsByClassName("leaflet-photon leaflet-control")[0];
         search.classList.add("leaflet-control-search")
         search.style.display = "flex";
@@ -1153,23 +1185,28 @@
         //  //  
         var overlaysTree = [
         {label: '<b>URUGUAY</b>', collapsed: true, selectAllCheckbox: true, children: [
-            {label: '<img src="legend/Lmite_13.png" /> Límite', layer: layer_Lmite_13},
-            {label: '<img src="legend/Departamentos_12.png" /> Departamentos', layer: layer_Departamentos_12},]},
+            {label: '<img src="legend/Lmite_18.png" /> Límite', layer: layer_Lmite_18},
+            {label: '<img src="legend/Departamentos_17.png" /> Departamentos', layer: layer_Departamentos_17},]},
         {label: '<b>AREAS DE SALUD</b>', collapsed: true, selectAllCheckbox: true, children: [
-            {label: '<img src="legend/Areas_11.png" /> Areas', layer: layer_Areas_11},]},
+            {label: '<img src="legend/Areas_16.png" /> Areas', layer: layer_Areas_16},]},
         {label: '<b>UNIDADES ASISTENCIALES</b>', collapsed: true, selectAllCheckbox: true, children: [
-            {label: '<img src="legend/Todaslasunidades_10.png" /> Todas las unidades', layer: cluster_Todaslasunidades_10},]},
+            {label: '<img src="legend/Todaslasunidades_15.png" /> Todas las unidades', layer: cluster_Todaslasunidades_15},]},
         {label: '<b>ZONAS DE REFERENCIA REGION SUR</b>', collapsed: true, selectAllCheckbox: true, children: [
-            {label: '<img src="legend/HospitalSaintBois_9.png" /> Hospital Saint Bois', layer: layer_HospitalSaintBois_9},
-            {label: '<img src="legend/HospitalEspaol_8.png" /> Hospital Español', layer: layer_HospitalEspaol_8},
-            {label: '<img src="legend/HospitalPando_7.png" /> Hospital Pando', layer: layer_HospitalPando_7},
-            {label: '<img src="legend/HospitaldeClinicas_6.png" /> Hospital de Clinicas', layer: layer_HospitaldeClinicas_6},
-            {label: '<img src="legend/CentroDepartamentalCanelones_5.png" /> Centro Departamental Canelones', layer: layer_CentroDepartamentalCanelones_5},
-            {label: '<img src="legend/HospitalLasPiedras_4.png" /> Hospital Las Piedras', layer: layer_HospitalLasPiedras_4},
-            {label: '<img src="legend/HospitalMaciel_3.png" /> Hospital Maciel', layer: layer_HospitalMaciel_3},
-            {label: '<img src="legend/HospitalPasteur_2.png" /> Hospital Pasteur', layer: layer_HospitalPasteur_2},
-            {label: '<img src="legend/HospitalCerro_1.png" /> Hospital Cerro', layer: layer_HospitalCerro_1},]},
-            {label: "OSM Standard", layer: layer_OSMStandard_0, radioGroup: 'bm' },]
+            {label: '<img src="legend/HospitalSaintBois_14.png" /> Hospital Saint Bois', layer: layer_HospitalSaintBois_14},
+            {label: '<img src="legend/HospitalEspaol_13.png" /> Hospital Español', layer: layer_HospitalEspaol_13},
+            {label: '<img src="legend/HospitalPando_12.png" /> Hospital Pando', layer: layer_HospitalPando_12},
+            {label: '<img src="legend/HospitaldeClinicas_11.png" /> Hospital de Clinicas', layer: layer_HospitaldeClinicas_11},
+            {label: '<img src="legend/CentroDepartamentalCanelones_10.png" /> Centro Departamental Canelones', layer: layer_CentroDepartamentalCanelones_10},
+            {label: '<img src="legend/HospitalLasPiedras_9.png" /> Hospital Las Piedras', layer: layer_HospitalLasPiedras_9},
+            {label: '<img src="legend/HospitalMaciel_8.png" /> Hospital Maciel', layer: layer_HospitalMaciel_8},
+            {label: '<img src="legend/HospitalPasteur_7.png" /> Hospital Pasteur', layer: layer_HospitalPasteur_7},
+            {label: '<img src="legend/HospitalCerro_6.png" /> Hospital Cerro', layer: layer_HospitalCerro_6},]},
+            {label: "OSM Standard", layer: layer_OSMStandard_5, radioGroup: 'bm' },
+            {label: "Esri Topographic", layer: layer_EsriTopographic_4, radioGroup: 'bm' },
+            {label: "Carto Light", layer: layer_CartoLight_3, radioGroup: 'bm' },
+            {label: "Esri Dark Gray", layer: layer_EsriDarkGray_2, radioGroup: 'bm' },
+            {label: "Carto Dark", layer: layer_CartoDark_1, radioGroup: 'bm' },
+            {label: "Esri Satelite", layer: layer_EsriSatelite_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
             //selectorBack: false,
