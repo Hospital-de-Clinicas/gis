@@ -52,27 +52,16 @@
         <script src="data/HospitalPando_12.js"></script>
         <script src="data/HospitalEspaol_13.js"></script>
         <script src="data/HospitalSaintBois_14.js"></script>
-        <script src="data/Areas_15.js"></script>
-        <script src="data/Todaslasunidadesbusqueda_16.js"></script>
+        <script src="data/Departamentos_15.js"></script>
+        <script src="data/Areas_16.js"></script>
         <script src="data/Todaslasunidades_17.js"></script>
-        <script src="data/Departamentos_18.js"></script>
-        <script src="data/Lmite_19.js"></script>
+        <script src="data/unidadesbusqueda_18.js"></script>
         <script>
-        var highlightLayer;
-        function highlightFeature(e) {
-            highlightLayer = e.target;
-            highlightLayer.openPopup();
-        }
-        //  //  
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[-34.87155956098754,-60.98991618290095],[-30.021369393669247,-51.07975132758076]]);                  
-        var initialBounds = L.latLngBounds(
-            [[-34.87155956098754, -60.98991618290095], [-30.021369393669247, -51.07975132758076]]
-        );
+        }).fitBounds([[-34.99636743259887,-57.2022091078964],[-33.54461006091376,-54.74406606268281]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://www.hc.edu.uy/" target="_blank" rel="noopener">Hospital de Clínicas</a> &middot; <a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        //  //
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
         // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
@@ -88,20 +77,53 @@
          }
          return tempDiv.innerHTML;
         }
-        // add class to format popup if it contains media
-		function addClassToPopupIfMedia(content, popup) {
-			var tempDiv = document.createElement('div');
-			tempDiv.innerHTML = content;
-			if (tempDiv.querySelector('td img')) {
-				popup._contentNode.classList.add('media');
-					// Delay to force the redraw
-					setTimeout(function() {
-						popup.update();
-					}, 10);
-			} else {
-				popup._contentNode.classList.remove('media');
-			}
-		}
+        // modify popup if contains media
+        function addClassToPopupIfMedia(content, popup) {
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            var imgTd = tempDiv.querySelector('td img');
+            if (imgTd) {
+                var src = imgTd.getAttribute('src');
+                if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
+                    popup._contentNode.classList.add('media');
+                    setTimeout(function() {
+                        popup.update();
+                    }, 10);
+                } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
+                    var audio = document.createElement('audio');
+                    audio.controls = true;
+                    audio.src = src;
+                    imgTd.parentNode.replaceChild(audio, imgTd);
+                    popup._contentNode.classList.add('media');
+                    setTimeout(function() {
+                        popup.setContent(tempDiv.innerHTML);
+                        popup.update();
+                    }, 10);
+                } else if (/\.(mp4|webm|ogg|mov)$/i.test(src)) {
+                    var video = document.createElement('video');
+                    video.controls = true;
+                    video.src = src;
+                    video.style.width = "400px";
+                    video.style.height = "300px";
+                    video.style.maxHeight = "60vh";
+                    video.style.maxWidth = "60vw";
+                    imgTd.parentNode.replaceChild(video, imgTd);
+                    popup._contentNode.classList.add('media');
+                    // Aggiorna il popup quando il video carica i metadati
+                    video.addEventListener('loadedmetadata', function() {
+                        popup.update();
+                    });
+                    setTimeout(function() {
+                        popup.setContent(tempDiv.innerHTML);
+                        popup.update();
+                    }, 10);
+                } else {
+                    popup._contentNode.classList.remove('media');
+                }
+            } else {
+                popup._contentNode.classList.remove('media');
+            }
+        }
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
@@ -184,18 +206,6 @@
         layer_OSMStandard_5;
         map.addLayer(layer_OSMStandard_5);
         function pop_HospitalCerro_6(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -247,18 +257,6 @@
         });
         bounds_group.addLayer(layer_HospitalCerro_6);
         function pop_HospitalPasteur_7(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -310,18 +308,6 @@
         });
         bounds_group.addLayer(layer_HospitalPasteur_7);
         function pop_HospitalMaciel_8(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -373,18 +359,6 @@
         });
         bounds_group.addLayer(layer_HospitalMaciel_8);
         function pop_HospitalLasPiedras_9(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -436,18 +410,6 @@
         });
         bounds_group.addLayer(layer_HospitalLasPiedras_9);
         function pop_CentroDepartamentalCanelones_10(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -499,18 +461,6 @@
         });
         bounds_group.addLayer(layer_CentroDepartamentalCanelones_10);
         function pop_HospitaldeClinicas_11(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -562,18 +512,6 @@
         });
         bounds_group.addLayer(layer_HospitaldeClinicas_11);
         function pop_HospitalPando_12(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -625,18 +563,6 @@
         });
         bounds_group.addLayer(layer_HospitalPando_12);
         function pop_HospitalEspaol_13(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -688,18 +614,6 @@
         });
         bounds_group.addLayer(layer_HospitalEspaol_13);
         function pop_HospitalSaintBois_14(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -750,19 +664,49 @@
             styles: [style_HospitalSaintBois_14_0,style_HospitalSaintBois_14_1,]
         });
         bounds_group.addLayer(layer_HospitalSaintBois_14);
-        function pop_Areas_15(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
+        function pop_Departamentos_15(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">REFERENCIA</th>\
+                        <td class="visible-with-data" id="REFERENCIA">' + (feature.properties['REFERENCIA'] !== null ? autolinker.link(String(feature.properties['REFERENCIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Departamentos_15_0() {
+            return {
+                pane: 'pane_Departamentos_15',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,166,178,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Departamentos_15');
+        map.getPane('pane_Departamentos_15').style.zIndex = 415;
+        map.getPane('pane_Departamentos_15').style['mix-blend-mode'] = 'normal';
+        var layer_Departamentos_15 = new L.geoJson(json_Departamentos_15, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Departamentos_15',
+            layerName: 'layer_Departamentos_15',
+            pane: 'pane_Departamentos_15',
+            onEachFeature: pop_Departamentos_15,
+            style: style_Departamentos_15_0,
+        });
+        bounds_group.addLayer(layer_Departamentos_15);
+        function pop_Areas_16(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">AREA DE SALUD</th>\
@@ -780,9 +724,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Areas_15_0() {
+        function style_Areas_16_0() {
             return {
-                pane: 'pane_Areas_15',
+                pane: 'pane_Areas_16',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -795,104 +739,20 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Areas_15');
-        map.getPane('pane_Areas_15').style.zIndex = 415;
-        map.getPane('pane_Areas_15').style['mix-blend-mode'] = 'normal';
-        var layer_Areas_15 = new L.geoJson(json_Areas_15, {
+        map.createPane('pane_Areas_16');
+        map.getPane('pane_Areas_16').style.zIndex = 416;
+        map.getPane('pane_Areas_16').style['mix-blend-mode'] = 'normal';
+        var layer_Areas_16 = new L.geoJson(json_Areas_16, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Areas_15',
-            layerName: 'layer_Areas_15',
-            pane: 'pane_Areas_15',
-            onEachFeature: pop_Areas_15,
-            style: style_Areas_15_0,
+            dataVar: 'json_Areas_16',
+            layerName: 'layer_Areas_16',
+            pane: 'pane_Areas_16',
+            onEachFeature: pop_Areas_16,
+            style: style_Areas_16_0,
         });
-        bounds_group.addLayer(layer_Areas_15);
-        function pop_Todaslasunidadesbusqueda_16(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">NOMBRE</th>\
-                        <td>' + (feature.properties['NOMBRE'] !== null ? autolinker.link(String(feature.properties['NOMBRE']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">DEPARTAMENTO</th>\
-                        <td>' + (feature.properties['DEPARTAMENTO'] !== null ? autolinker.link(String(feature.properties['DEPARTAMENTO']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">REGION</th>\
-                        <td>' + (feature.properties['REGION'] !== null ? autolinker.link(String(feature.properties['REGION']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">AREA DE SALUD</th>\
-                        <td>' + (feature.properties['AREA DE SALUD'] !== null ? autolinker.link(String(feature.properties['AREA DE SALUD']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">CATEGORIA</th>\
-                        <td>' + (feature.properties['CATEGORIA'] !== null ? autolinker.link(String(feature.properties['CATEGORIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">ZONA DE REFERENCIA</th>\
-                        <td>' + (feature.properties['ZONA DE REFERENCIA'] !== null ? autolinker.link(String(feature.properties['ZONA DE REFERENCIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Todaslasunidadesbusqueda_16_0() {
-            return {
-                fill: false,
-                stroke: false,
-                interactive: false
-            }
-        }
-        map.createPane('pane_Todaslasunidadesbusqueda_16');
-        map.getPane('pane_Todaslasunidadesbusqueda_16').style.zIndex = 416;
-        map.getPane('pane_Todaslasunidadesbusqueda_16').style['mix-blend-mode'] = 'normal';
-        var layer_Todaslasunidadesbusqueda_16 = new L.geoJson(json_Todaslasunidadesbusqueda_16, {
-            attribution: '',
-            interactive: false,
-            dataVar: 'json_Todaslasunidadesbusqueda_16',
-            layerName: 'layer_Todaslasunidadesbusqueda_16',
-            pane: 'pane_Todaslasunidadesbusqueda_16',
-            onEachFeature: pop_Todaslasunidadesbusqueda_16,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_Todaslasunidadesbusqueda_16_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_Todaslasunidadesbusqueda_16);
+        bounds_group.addLayer(layer_Areas_16);
         function pop_Todaslasunidades_17(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">NOMBRE</th>\
@@ -933,7 +793,7 @@
         rotationOrigin: 'center center',
         icon: L.icon({
             iconUrl: 'markers/Todaslasunidades_17.svg',
-            iconSize: [14.44, 14.44]
+            iconSize: [15.959999999999999, 15.959999999999999]
         }),
                 interactive: true,
             }
@@ -961,23 +821,31 @@
         cluster_Todaslasunidades_17.addLayer(layer_Todaslasunidades_17);
 
         bounds_group.addLayer(layer_Todaslasunidades_17);
-        function pop_Departamentos_18(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
+        function pop_unidadesbusqueda_18(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">REFERENCIA</th>\
-                        <td class="visible-with-data" id="REFERENCIA">' + (feature.properties['REFERENCIA'] !== null ? autolinker.link(String(feature.properties['REFERENCIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">NOMBRE</th>\
+                        <td>' + (feature.properties['NOMBRE'] !== null ? autolinker.link(String(feature.properties['NOMBRE']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DEPARTAMENTO</th>\
+                        <td>' + (feature.properties['DEPARTAMENTO'] !== null ? autolinker.link(String(feature.properties['DEPARTAMENTO']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">REGION</th>\
+                        <td>' + (feature.properties['REGION'] !== null ? autolinker.link(String(feature.properties['REGION']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">AREA DE SALUD</th>\
+                        <td>' + (feature.properties['AREA DE SALUD'] !== null ? autolinker.link(String(feature.properties['AREA DE SALUD']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CATEGORIA</th>\
+                        <td>' + (feature.properties['CATEGORIA'] !== null ? autolinker.link(String(feature.properties['CATEGORIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA DE REFERENCIA</th>\
+                        <td>' + (feature.properties['ZONA DE REFERENCIA'] !== null ? autolinker.link(String(feature.properties['ZONA DE REFERENCIA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -987,88 +855,36 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Departamentos_18_0() {
+        function style_unidadesbusqueda_18_0() {
             return {
-                pane: 'pane_Departamentos_18',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 2.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(243,166,178,0.0)',
-                interactive: true,
+                fill: false,
+                stroke: false,
+                interactive: false
             }
         }
-        map.createPane('pane_Departamentos_18');
-        map.getPane('pane_Departamentos_18').style.zIndex = 418;
-        map.getPane('pane_Departamentos_18').style['mix-blend-mode'] = 'normal';
-        var layer_Departamentos_18 = new L.geoJson(json_Departamentos_18, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_Departamentos_18',
-            layerName: 'layer_Departamentos_18',
-            pane: 'pane_Departamentos_18',
-            onEachFeature: pop_Departamentos_18,
-            style: style_Departamentos_18_0,
-        });
-        bounds_group.addLayer(layer_Departamentos_18);
-        function pop_Lmite_19(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Lmite_19_0() {
-            return {
-                pane: 'pane_Lmite_19',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 3.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(232,113,141,0.0)',
-                interactive: false,
-            }
-        }
-        map.createPane('pane_Lmite_19');
-        map.getPane('pane_Lmite_19').style.zIndex = 419;
-        map.getPane('pane_Lmite_19').style['mix-blend-mode'] = 'normal';
-        var layer_Lmite_19 = new L.geoJson(json_Lmite_19, {
+        map.createPane('pane_unidadesbusqueda_18');
+        map.getPane('pane_unidadesbusqueda_18').style.zIndex = 418;
+        map.getPane('pane_unidadesbusqueda_18').style['mix-blend-mode'] = 'normal';
+        var layer_unidadesbusqueda_18 = new L.geoJson(json_unidadesbusqueda_18, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_Lmite_19',
-            layerName: 'layer_Lmite_19',
-            pane: 'pane_Lmite_19',
-            onEachFeature: pop_Lmite_19,
-            style: style_Lmite_19_0,
+            dataVar: 'json_unidadesbusqueda_18',
+            layerName: 'layer_unidadesbusqueda_18',
+            pane: 'pane_unidadesbusqueda_18',
+            onEachFeature: pop_unidadesbusqueda_18,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_unidadesbusqueda_18_0(feature));
+            },
         });
-        bounds_group.addLayer(layer_Lmite_19);
-        const url = {"Nominatim": "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&",
-        "BAN": "https://api-adresse.data.gouv.fr/search/?"}
+        bounds_group.addLayer(layer_unidadesbusqueda_18);
+        const url = {"Nominatim OSM": "https://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&",
+        "France BAN": "https://api-adresse.data.gouv.fr/search/?"}
         var photonControl = L.control.photon({
-            url: url["Nominatim"],
+            url: url["Nominatim OSM"],
             feedbackLabel: '',
             position: 'topleft',
             includePosition: true,
@@ -1082,55 +898,32 @@
         var marker = null;
         // Add an event listener to the Photon control to create a marker from the returned geoJSON data
         var z = null;
-        //  //  
         photonControl.on('selected', function(e) {
             console.log(photonControl.search.resultsContainer);
-
             if (x != null) {
                 map.removeLayer(obj3.marker);
                 map.removeLayer(x);
             }
             obj2.gcd = e.choice;
             x = L.geoJSON(obj2.gcd).addTo(map);
-
-            var label = typeof obj2.gcd.properties.label === 'undefined'
-                ? obj2.gcd.properties.display_name
-                : obj2.gcd.properties.label;
-
-            obj3.marker = L.marker(x.getLayers()[0].getLatLng())
-                .bindPopup(label)
-                .addTo(map)
-                .openPopup();
-            obj3.marker.on('click', function(ev) {
-                if (obj3.marker) {
-                    map.removeLayer(obj3.marker);
-                    obj3.marker = null;
-                }
-                if (x) {
-                    map.removeLayer(x);
-                    x = null;
-                }
-                L.DomEvent.stop(ev);
-            });
+            var label = typeof obj2.gcd.properties.label === 'undefined' ? obj2.gcd.properties.display_name : obj2.gcd.properties.label;
+            obj3.marker = L.marker(x.getLayers()[0].getLatLng()).bindPopup(label).addTo(map);
             map.setView(x.getLayers()[0].getLatLng(), 17);
-            z = typeof e.choice.properties.label === 'undefined'
-                ? e.choice.properties.display_name
-                : e.choice.properties.label;
+            z = typeof e.choice.properties.label === 'undefined'? e.choice.properties.display_name : e.choice.properties.label;
             console.log(e);
             e.target.input.value = z;
         });
-        //  // 
         var search = document.getElementsByClassName("leaflet-photon leaflet-control")[0];
         search.classList.add("leaflet-control-search")
         search.style.display = "flex";
         search.style.backgroundColor="rgba(255,255,255,0.5)" 
 
-        // Créer le nouvel élément bouton
+        // Create the new button element
         var button = document.createElement("div");
         button.id = "gcd-button-control";
         button.className = "gcd-gl-btn fa fa-search search-button";
 
-        // Ajouter le bouton à l'élément parent
+        // Insert the button at the beginning of the search control
         search.insertBefore(button, search.firstChild);
         last = search.lastChild;
         last.style.display = "none";
@@ -1141,69 +934,13 @@
                 last.style.display = "none";
             }
         });
-        // //          
-        var ResetViewControl = L.Control.extend({
-            options: { position: "topleft" },
-
-            onAdd: function () {
-                var container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
-                var a = L.DomUtil.create("a", "", container);
-
-                a.href = "#";
-                a.title = "Restablecer mapa";
-                a.setAttribute("aria-label", "Restablecer mapa");
-                a.innerHTML = '<i class="fas fa-home"></i>'; // icono home
-
-                L.DomEvent.on(a, "click", function (ev) {
-                    L.DomEvent.stop(ev);                    
-                    try {
-                        if (x) {
-                            map.removeLayer(x);
-                            x = null;
-                        }
-                    } catch (e) {}
-                    try {
-                        if (typeof obj3 !== "undefined" && obj3.marker) {
-                            map.removeLayer(obj3.marker);
-                            obj3.marker = null;
-                        }
-                    } catch (e) {}                    
-                    try {
-                        if (photonControl && photonControl._input) {
-                            photonControl._input.value = "";
-                        }
-                    } catch (e) {}
-
-                    // restaurar capas originales
-                    map.eachLayer(function(layer){
-                        if (!initialLayers.includes(layer)) {
-                            map.removeLayer(layer);
-                        }
-                    });
-
-                    initialLayers.forEach(function(layer){
-                        if (!map.hasLayer(layer)) {
-                            map.addLayer(layer);
-                        }
-                    });                   
-                    // reset zoom
-                    map.fitBounds(initialBounds);
-                });
-
-                return container;
-            },
-        });
-        map.addControl(new ResetViewControl());
-        //  //  
         var overlaysTree = [
-        {label: '<b>CARTOGRAFIA BASICA</b>', collapsed: true, selectAllCheckbox: true, children: [
-            {label: '<img src="legend/Lmite_19.png" /> Límite', layer: layer_Lmite_19},
-            {label: '<img src="legend/Departamentos_18.png" /> Departamentos', layer: layer_Departamentos_18},]},
         {label: '<b>UNIDADES ASISTENCIALES</b>', collapsed: true, selectAllCheckbox: true, children: [
-            {label: '<img src="legend/Todaslasunidades_17.png" /> Todas las unidades', layer: cluster_Todaslasunidades_17},
-            {label: 'Todas las unidades busqueda', layer: layer_Todaslasunidadesbusqueda_16},]},
+            {label: 'unidades busqueda', layer: layer_unidadesbusqueda_18},
+            {label: '<img src="legend/Todaslasunidades_17.png" /> Todas las unidades', layer: cluster_Todaslasunidades_17},]},
         {label: '<b>AREAS DE SALUD</b>', collapsed: true, selectAllCheckbox: true, children: [
-            {label: '<img src="legend/Areas_15.png" /> Areas', layer: layer_Areas_15},]},
+            {label: '<img src="legend/Areas_16.png" /> Areas', layer: layer_Areas_16},
+            {label: '<img src="legend/Departamentos_15.png" /> Departamentos', layer: layer_Departamentos_15},]},
         {label: '<b>ZONAS DE REFERENCIA REGION SUR</b>', collapsed: true, selectAllCheckbox: true, children: [
             {label: '<img src="legend/HospitalSaintBois_14.png" /> Hospital Saint Bois', layer: layer_HospitalSaintBois_14},
             {label: '<img src="legend/HospitalEspaol_13.png" /> Hospital Español', layer: layer_HospitalEspaol_13},
@@ -1279,118 +1016,18 @@
                     isLayersListExpanded = !isLayersListExpanded;
                 }, 500);
             }  
-        });
+        });       
         setBounds();
-        // guardar capas activas al iniciar el mapa
-        var initialLayers = [];
-
-        map.eachLayer(function(layer){
-            initialLayers.push(layer);
-        });
-
-        var layerSearchControl = new L.Control.Search({
-            layer: layer_Todaslasunidadesbusqueda_16,
+        map.addControl(new L.Control.Search({
+            layer: layer_unidadesbusqueda_18,
             initial: false,
             hideMarkerOnCollapse: true,
-            propertyName: 'NOMBRE'
-        });
-
-        map.addControl(layerSearchControl);
-
+            propertyName: 'NOMBRE'}));
         if (typeof url === 'undefined') {
             document.getElementsByClassName('search-button')[0].className += ' fa fa-binoculars';
         } else {
             document.getElementsByClassName('search-button')[1].className += ' fa fa-binoculars';
         }
-
-
-        // -------- CONTROL DE MODO DE BUSQUEDA --------
-
-        var SearchModeControl = L.Control.extend({
-
-            options: {
-                position: "bottomleft"
-            },
-
-            onAdd: function () {
-
-                var container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
-
-                container.style.backgroundColor = "white";
-                container.style.lineHeight = "1.2";
-                container.style.fontSize = "12px";
-                container.style.margin = "10px";
-                container.style.position = "relative";
-                container.style.padding = "0";
-                container.style.minWidth = "0";
-                container.style.width = "30px";
-
-                container.innerHTML =
-                    '<a href="#" class="search-mode-toggle" ' +
-                        'style="display:block;width:30px;height:30px;line-height:30px;text-align:center;text-decoration:none;color:black;">' +
-                        '<i class="fa fa-filter"></i>' +
-                    '</a>' +
-                    '<div class="search-mode-panel" ' +
-                        'style="display:none;position:absolute;left:0;bottom:30px;background:white;padding:6px 8px;min-width:120px;box-shadow:0 1px 5px rgba(0,0,0,0.4);z-index:1000;">' +
-                            '<div style="font-weight:600;margin-bottom:4px;">Buscar por</div>' +
-                            '<label style="display:block;cursor:pointer;margin-bottom:3px;">' +
-                                '<input type="radio" name="search-mode" value="NOMBRE" checked> Nombre' +
-                            '</label>' +
-                            '<label style="display:block;cursor:pointer;">' +
-                                '<input type="radio" name="search-mode" value="ALIAS"> Alias' +
-                            '</label>' +
-                    '</div>';
-
-                L.DomEvent.disableClickPropagation(container);
-                L.DomEvent.disableScrollPropagation(container);
-
-                var toggle = container.querySelector('.search-mode-toggle');
-                var panel = container.querySelector('.search-mode-panel');
-
-                L.DomEvent.on(toggle, 'click', function (ev) {
-
-                    L.DomEvent.stop(ev);
-
-                    if (panel.style.display === 'none') {
-                        panel.style.display = 'block';
-                    } else {
-                        panel.style.display = 'none';
-                    }
-
-                });
-
-                var radios = container.querySelectorAll('input[name="search-mode"]');
-
-                radios.forEach(function (radio) {
-
-                    radio.addEventListener('change', function () {
-
-                        layerSearchControl.options.propertyName = this.value;
-
-                        var input = document.querySelector(
-                            '.leaflet-control-search input.search-input'
-                        );
-
-                        if (input) {
-
-                            if (this.value === 'NOMBRE') {
-                                input.placeholder = 'Buscar por nombre';
-                            } else if (this.value === 'ALIAS') {
-                                input.placeholder = 'Buscar por alias';
-                            }
-
-                            input.value = '';
-                        }
-
-                    });
-
-                });
-
-                return container;
-            }
-        });
-
-        map.addControl(new SearchModeControl());
-        </script>
+        </script>        
     </body>
 </html>
